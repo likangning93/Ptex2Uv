@@ -1,0 +1,4 @@
+[submodule "ThirdParty/tinyobjloader"]
+	path = ThirdParty/tinyobjloader
+	url = git@github.com:syoyo/tinyobjloader.git
+	branch = master
