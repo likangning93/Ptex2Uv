@@ -1,6 +1,10 @@
-#define TINYOBJLOADER_IMPLEMENTATION // define this in only *one* .cc
-#include "tiny_obj_loader.h"
 #include <iostream>
+
+#include "buildGraph.hpp"
+#include "Quad.hpp"
+
+#define TINYOBJLOADER_IMPLEMENTATION // define this in only *one* .cc after includes that also use tiny_obj_loader.h
+#include "tiny_obj_loader.h"
 
 int main(int argc, char *argv[])
 {
@@ -32,6 +36,13 @@ int main(int argc, char *argv[])
     // Loop over shapes
     for (size_t s = 0; s < shapes.size(); s++)
     {
+        tinyobj::shape_t shape = shapes[s];
+        std::vector<Quad> quads;
+        quads.resize(shape.mesh.indices.size() / 4);
+        buildGraph(shape.mesh.indices, quads);
+
+        std::cout << "GRAPH DONE" << std::endl;
+        /*
         // Loop over faces(polygon)
         size_t index_offset = 0;
         for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++)
@@ -51,6 +62,6 @@ int main(int argc, char *argv[])
 
             // per-face material
             shapes[s].mesh.material_ids[f];
-        }
+        }*/
     }
 }
