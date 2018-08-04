@@ -47,5 +47,7 @@ int main(int argc, char *argv[])
 
         std::vector<QuadPatch> quadPatches;
         buildPatches(quads, quadPatches, 50);
+
+        std::cout << "PATCHES DONE" << std::endl;
     }
 }

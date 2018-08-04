@@ -43,6 +43,7 @@ void buildGraph(std::vector<tinyobj::index_t> &indices, std::vector<Quad> &quads
     for (int i = 0; i < quadsCount; i++)
     {
         Quad* quad = &quads[i];
+        quad->index = i;
 
         int index = i * 4;
         int v0 = indices[index].vertex_index;

@@ -1,6 +1,7 @@
 #ifndef BUILDPATCHES_H
 #define BUILDPATCHES_H
 
+#include <algorithm>
 #include <vector>
 
 #include "Quad.hpp"

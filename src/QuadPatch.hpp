@@ -6,9 +6,10 @@
 #include "Quad.hpp"
 
 struct QuadPatch {
-    std::vector<Quad> quads;
+    std::vector<int> quadIndices;
     int width = 0;
     int height = 0;
+    int index = 0;
 };
 
 #endif
