@@ -3,6 +3,8 @@ set(SOURCE_FILES
     "buildGraph.cpp"
     "buildPatches.hpp"
     "buildPatches.cpp"
+    "PackingGrid.hpp"
+    "PackingGrid.cpp"
     "Quad.hpp"
     "QuadPatch.hpp"
     )

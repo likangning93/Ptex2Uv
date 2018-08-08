@@ -4,6 +4,7 @@
 #include "buildPatches.hpp"
 #include "Quad.hpp"
 #include "QuadPatch.hpp"
+#include "PackingGrid.hpp"
 
 #define TINYOBJLOADER_IMPLEMENTATION // define this in only *one* .cc after includes that also use tiny_obj_loader.h
 #include "tiny_obj_loader.h"
@@ -49,5 +50,7 @@ int main(int argc, char *argv[])
         buildPatches(quads, quadPatches, 50);
 
         std::cout << "PATCHES DONE" << std::endl;
+
+        packingGridTests();
     }
 }

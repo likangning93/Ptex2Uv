@@ -20,6 +20,8 @@ $ cmake -DCMAKE_BUILD_TYPE=Debug ..
 
 A `launch.json` is provided for debugging using VS Code and GDB.
 
+# Mesh patch generation
+
 ## Algorithm
 
 Meshes textured with Ptex are entirely made up of quads, with a square of texels per face.
@@ -65,5 +67,17 @@ Note that each edge can only be associated with at most two quads. So we can opt
 
 Side note: with the second optimization, by the end of the process we conveniently have a map full of edges that are parts of edge loops in the original mesh. Cantor pairing is also reversible! But this isn't important to our algorithm, since the goal is to introduce a bunch of additional edge loops anyway.
 
-# Future work
+## Future work
 * use a custom hash map for the edge map instead of `std::unordered_map` for better performance
+
+# UV generation
+
+Given mesh patches that will lie flat without overlapping themselves, we can pack these into UV space using the technique here: http://the-witness.net/news/2010/03/graphics-tech-texture-parameterization/
+
+* sort patches by area
+* "rasterize" into a bit-grid starting from the top left
+* double size of the bit grid as needed
+
+## Datastructures
+
+A bit grid that allows fast copying into the top left of another bit grid.

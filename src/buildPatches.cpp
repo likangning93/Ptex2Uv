@@ -71,7 +71,7 @@ void growPatch(Quad* quad, std::vector<Quad> &quads, QuadPatch &quadPatch, int d
 }
 
 void buildPatches(std::vector<Quad> &quads, std::vector<QuadPatch> &quadPatches, int dimensionLimit) {
-    int currentPatchIndex = 0;
+    int currentPatchIndex = 1;
     int quadCount = quads.size();
     for (int i = 0; i < quadCount; i++) {
         Quad* quad = &quads[i];
