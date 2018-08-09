@@ -12,6 +12,8 @@ public:
     PackingGrid(uint width);
     ~PackingGrid();
 
+    uint width;
+
     void set(uint x, uint y, uint val);
 
     uint get(uint x, uint y);
@@ -22,7 +24,6 @@ public:
 
 private:
     std::vector<uint> *pixels;
-    uint width;
 };
 
 void packingGridTests();

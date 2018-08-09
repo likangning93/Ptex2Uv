@@ -5,6 +5,8 @@ set(SOURCE_FILES
     "buildPatches.cpp"
     "PackingGrid.hpp"
     "PackingGrid.cpp"
+    "packPatches.hpp"
+    "packPatches.cpp"
     "Quad.hpp"
     "QuadPatch.hpp"
     )
