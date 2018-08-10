@@ -56,7 +56,9 @@ int main(int argc, char *argv[])
 
         packPatches(quadPatches, grid, quads);
 
-        std::cout << "PACKING DONE" << std::endl;
+        std::cout << "PACKING..." << std::endl;
         grid.print();
+
+        std::cout << "PACKING DONE" << std::endl;
     }
 }

@@ -3,13 +3,13 @@
 bool rasterOk(int x, int y, QuadPatch &quadPatch, PackingGrid &grid, std::vector<Quad> &quads)
 {
     int quadCount = quadPatch.quadIndices.size();
-    if (quadPatch.width + x >= grid.width || quadPatch.height + y >= grid.width)
+    if ((quadPatch.width + x) > grid.width || (quadPatch.height) + y > grid.width)
     {
         return false;
     }
     for (int i = 0; i < quadCount; i++) {
         Quad* quad = &quads[quadPatch.quadIndices[i]];
-        if (grid.get(quad->x, quad->y) != 0) {
+        if (grid.get(quad->x + x, quad->y + y) != 0) {
             return false;
         }
     }
@@ -21,7 +21,7 @@ void rasterize(int x, int y, QuadPatch &quadPatch, PackingGrid &grid, std::vecto
     int quadCount = quadPatch.quadIndices.size();
     for (int i = 0; i < quadCount; i++) {
         Quad* quad = &quads[quadPatch.quadIndices[i]];
-        grid.set(quad->x, quad->y, quadPatch.index);
+        grid.set(quad->x + x, quad->y + y, quadPatch.index);
     }
 }
 
