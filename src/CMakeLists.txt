@@ -7,8 +7,12 @@ set(SOURCE_FILES
     "PackingGrid.cpp"
     "packPatches.hpp"
     "packPatches.cpp"
+    "generateUVs.hpp"
+    "generateUVs.cpp"
     "Quad.hpp"
     "QuadPatch.hpp"
+    "obj_writer.h"
+    "obj_writer.cc"
     )
 
 add_library(src

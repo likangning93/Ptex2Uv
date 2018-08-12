@@ -37,6 +37,8 @@ void packPatch(QuadPatch &patch, PackingGrid &grid, std::vector<Quad> &quads)
             for (int x = 0; x < grid.width; x++) {
                 if (rasterOk(x, y, patch, grid, quads)) {
                     rasterize(x, y, patch, grid, quads);
+                    patch.x = x;
+                    patch.y = y;
                     return;
                 }
             }

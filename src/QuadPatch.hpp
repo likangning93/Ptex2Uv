@@ -10,6 +10,9 @@ struct QuadPatch {
     int width = 0;
     int height = 0;
     int index = 0;
+
+    uint x = -1;
+    uint y = -1;
 };
 
 #endif

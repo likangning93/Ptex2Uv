@@ -56,6 +56,11 @@ void buildGraph(std::vector<tinyobj::index_t> &indices, std::vector<Quad> &quads
         quad->edgeIndices[2] = cantorPair(v2, v3);
         quad->edgeIndices[3] = cantorPair(v3, v0);
 
+        quad->indices[0] = v0;
+        quad->indices[1] = v1;
+        quad->indices[2] = v2;
+        quad->indices[3] = v3;
+
         checkEdge(v0, v1, i, quad, quads, edgeMap);
         checkEdge(v1, v2, i, quad, quads, edgeMap);
         checkEdge(v2, v3, i, quad, quads, edgeMap);
