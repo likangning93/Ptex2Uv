@@ -18,18 +18,18 @@ void getSharedIndices(Quad* a, Quad* b, int& shared0, int &shared1) {
 
 int nextVertexIndexCcwise(Quad* quad, int vertexIndex) {
     int indexOfNext = 1;
-    indexOfNext = quad->indices[1] == vertexIndex ? 2 : vertexIndex;
-    indexOfNext = quad->indices[2] == vertexIndex ? 3 : vertexIndex;
-    indexOfNext = quad->indices[3] == vertexIndex ? 0 : vertexIndex;
+    indexOfNext = quad->indices[1] == vertexIndex ? 2 : indexOfNext;
+    indexOfNext = quad->indices[2] == vertexIndex ? 3 : indexOfNext;
+    indexOfNext = quad->indices[3] == vertexIndex ? 0 : indexOfNext;
 
     return quad->indices[indexOfNext];
 }
 
 int nextVertexIndexCwise(Quad* quad, int vertexIndex) {
     int indexOfNext = 3;
-    indexOfNext = quad->indices[1] == vertexIndex ? 0 : vertexIndex;
-    indexOfNext = quad->indices[2] == vertexIndex ? 1 : vertexIndex;
-    indexOfNext = quad->indices[3] == vertexIndex ? 2 : vertexIndex;
+    indexOfNext = quad->indices[1] == vertexIndex ? 0 : indexOfNext;
+    indexOfNext = quad->indices[2] == vertexIndex ? 1 : indexOfNext;
+    indexOfNext = quad->indices[3] == vertexIndex ? 2 : indexOfNext;
 
     return quad->indices[indexOfNext];
 }
@@ -121,7 +121,7 @@ void generateUVs(tinyobj::attrib_t &attrib, std::vector<Quad> &quads,
                 Quad* neighborInPatch0 = NULL;
                 Quad* neighborInPatch1 = NULL;
                 for (int n = 0; n < 4; n++) {
-                    Quad* neighbor = &quads[quad->neighbors[0]];
+                    Quad* neighbor = &quads[quad->neighbors[n]];
                     if (neighbor->patchIndex == quad->patchIndex) {
                         if (neighborInPatch0 == NULL) {
                             neighborInPatch0 = neighbor;
@@ -168,7 +168,7 @@ void generateUVs(tinyobj::attrib_t &attrib, std::vector<Quad> &quads,
                     sharedIndex0 = nextVertexIndexCcwise(quad, sharedIndex0);
                     texcoordIndex = indexMap[sharedIndex0] * 2;
                     newAttribs.texcoords[texcoordIndex    ] = inverseGridWidth * quadStartX;
-                    newAttribs.texcoords[texcoordIndex + 1] = inverseGridWidth * quadStartY + 1;
+                    newAttribs.texcoords[texcoordIndex + 1] = inverseGridWidth * (quadStartY + 1);
 
                     sharedIndex0 = nextVertexIndexCcwise(quad, sharedIndex0);
                     texcoordIndex = indexMap[sharedIndex0] * 2;
@@ -176,6 +176,7 @@ void generateUVs(tinyobj::attrib_t &attrib, std::vector<Quad> &quads,
                     newAttribs.texcoords[texcoordIndex + 1] = inverseGridWidth * quadStartY;
 
                     sharedIndex0 = nextVertexIndexCcwise(quad, sharedIndex0);
+                    texcoordIndex = indexMap[sharedIndex0] * 2;
                     newAttribs.texcoords[texcoordIndex    ] = inverseGridWidth * (quadStartX + 1);
                     newAttribs.texcoords[texcoordIndex + 1] = inverseGridWidth * (quadStartY);
                 } else {
@@ -207,28 +208,28 @@ void generateUVs(tinyobj::attrib_t &attrib, std::vector<Quad> &quads,
                 Quad* neighbourQuad = &quads[quadPatch->quadIndices[q - 1]];
                 getSharedIndices(quad, neighbourQuad, sharedIndex0, sharedIndex1);
                 
-                int nextIndexCCwise = nextVertexIndexCcwise(quad, sharedIndex0);
-                if (nextIndexCCwise == sharedIndex1) {
-                    nextIndexCCwise = nextVertexIndexCcwise(quad, nextIndexCCwise);
+                int vertexIndex0 = nextVertexIndexCcwise(quad, sharedIndex0);
+                if (vertexIndex0 == sharedIndex1) {
+                    vertexIndex0 = nextVertexIndexCcwise(quad, vertexIndex0);
                 }
-                texcoordIndex = indexMap[nextIndexCCwise] * 2;
+                int texcoordIndex0 = indexMap[vertexIndex0] * 2;
 
-                nextIndexCCwise = nextVertexIndexCcwise(quad, nextIndexCCwise);
-                int nextTexcoordIndex = indexMap[nextIndexCCwise] * 2;
-                int sharedTexcoordIndex = indexMap[sharedIndex0] * 2;
-                int sharedTexcoordIndex2 = indexMap[sharedIndex1] * 2;
+                int vertexIndex1 = nextVertexIndexCcwise(quad, vertexIndex0);
+                int texcoordIndex1 = indexMap[vertexIndex1] * 2;
+                int texcoordIndex3 = indexMap[nextVertexIndexCwise(quad, vertexIndex0)] * 2; // shared with neighbourQuad
+                int texcoordIndex2 = indexMap[nextVertexIndexCcwise(quad, vertexIndex1)] * 2; // shared with neighbourQuad
                 if (quad->x > neighbourQuad->x) {
-                    newAttribs.texcoords[texcoordIndex    ] = inverseGridWidth * (quadStartX + 1);
-                    newAttribs.texcoords[texcoordIndex + 1] = newAttribs.texcoords[sharedTexcoordIndex + 1];
+                    newAttribs.texcoords[texcoordIndex0    ] = inverseGridWidth * (quadStartX + 1);
+                    newAttribs.texcoords[texcoordIndex0 + 1] = newAttribs.texcoords[texcoordIndex3 + 1];
 
-                    newAttribs.texcoords[nextTexcoordIndex    ] = inverseGridWidth * (quadStartX + 1);
-                    newAttribs.texcoords[nextTexcoordIndex + 1] = newAttribs.texcoords[sharedTexcoordIndex2 + 1];
+                    newAttribs.texcoords[texcoordIndex1    ] = inverseGridWidth * (quadStartX + 1);
+                    newAttribs.texcoords[texcoordIndex1 + 1] = newAttribs.texcoords[texcoordIndex2 + 1];
                 } else {
-                    newAttribs.texcoords[texcoordIndex    ] = newAttribs.texcoords[sharedTexcoordIndex];
-                    newAttribs.texcoords[texcoordIndex + 1] = inverseGridWidth * (quadStartY + 1);
+                    newAttribs.texcoords[texcoordIndex0    ] = newAttribs.texcoords[texcoordIndex3];
+                    newAttribs.texcoords[texcoordIndex0 + 1] = inverseGridWidth * (quadStartY + 1);
 
-                    newAttribs.texcoords[nextTexcoordIndex    ] = newAttribs.texcoords[sharedTexcoordIndex2];
-                    newAttribs.texcoords[nextTexcoordIndex + 1] = inverseGridWidth * (quadStartY + 1);
+                    newAttribs.texcoords[texcoordIndex1    ] = newAttribs.texcoords[texcoordIndex2];
+                    newAttribs.texcoords[texcoordIndex1 + 1] = inverseGridWidth * (quadStartY + 1);
                 }
             }
         }
